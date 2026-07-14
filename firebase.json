@@ -6,9 +6,16 @@
       "**/.*",
       "**/node_modules/**",
       "__pycache__/**",
+      "android/**",
+      "assets/**",
+      "templates/**",
+      "live_comparison/**",
       "app.py",
       "main.py",
       "routes.py",
+      "build.js",
+      "capacitor.config.json",
+      "package.json",
       "pyproject.toml",
       "uv.lock",
       "replit.md",
@@ -19,7 +26,12 @@
       "tmp_test_filters.js",
       "data/**",
       "attached_assets/**",
-      "squarespace_deployment/**"
+      "squarespace_deployment/**",
+      "**/*.aab",
+      "**/*.apk",
+      "**/*.keystore",
+      "**/*.jar",
+      "**/*.bat"
     ]
   }
 }
