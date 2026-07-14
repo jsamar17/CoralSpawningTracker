@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REEF Scuba Coral Spawning Tracker</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="static/images/reef_favicon.png?v=3">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <!-- Left Panel - Control Panel (35%) -->
+            <div class="col-md-4 control-panel mobile-active" id="mobile-map-panel">
+                <div class="panel-content">
+                    <div class="header-section">
+                        <h2 class="panel-title">
+                            <i class="fas fa-search me-2"></i>
+                            Coral Spawning Search
+                        </h2>
+                        <p class="panel-subtitle">Find coral spawning events by location</p>
+                    </div>
+
+                    <!-- Interactive Map -->
+                    <div class="map-section">
+                        <div class="section-header d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="mb-0"><i class="fas fa-map-marker-alt me-2" style="color: var(--accent-primary);"></i>Location</h5>
+                            <div class="heatmap-control" role="group">
+                                <button class="heatmap-btn active" data-mode="off">Off</button>
+                                <button class="heatmap-btn" data-mode="heatmap" title="Shows density of published coral spawning observations">Density</button>
+                            </div>
+                        </div>
+                        <div id="map" class="interactive-map"></div>
+                        
+                        <!-- Location Controls -->
+                        <div class="location-controls mt-3">
+                            <div class="input-group mb-2">
+                                <input type="text" id="location-search" class="form-control" placeholder="Search for a location...">
+                                <button class="btn btn-outline-primary" type="button" id="search-btn">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            <button class="btn btn-outline-success btn-sm w-100" id="locate-me-btn">
+                                <i class="fas fa-crosshairs me-2"></i>Use My Location
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Distance Slider -->
+                    <div class="distance-section mt-4">
+                        <div class="section-header">
+                            <h5><i class="fas fa-ruler-combined me-2"></i>Search Radius</h5>
+                        </div>
+                        <div class="distance-control">
+                            <label for="distance-slider" class="form-label">
+                                Distance: <span id="distance-value">50</span> km
+                            </label>
+                            <input type="range" class="form-range" id="distance-slider" min="1" max="1000" value="50">
+                        </div>
+                    </div>
+
+                    <!-- Search Button -->
+                    <div class="search-section mt-4">
+                        <button class="btn btn-primary btn-lg w-100" id="search-events-btn">
+                            <i class="fas fa-search me-2"></i>Search Spawning Events
+                        </button>
+                    </div>
+
+                    <!-- Export Buttons -->
+                    <div class="mobile-export-title text-center mb-4 mt-3">
+                        <h2 class="panel-title"><i class="fas fa-download me-2"></i>Export & Data Info</h2>
+                    </div>
+                    <div class="export-section mt-3 d-flex gap-2">
+                        <button class="btn btn-outline-info w-50" id="export-btn" disabled title="Export to CSV">
+                            <i class="fas fa-file-csv me-2"></i>CSV
+                        </button>
+                        <button class="btn btn-outline-danger w-50" id="export-pdf-btn" disabled title="Export as PDF Report">
+                            <i class="fas fa-file-pdf me-2"></i>PDF Report
+                        </button>
+                    </div>
+
+                    <!-- Attribution Section -->
+                    <div class="attribution-section mt-4">
+                        <div class="powered-by text-center mb-3">
+                            <p style="color: var(--text-secondary); font-size: 1rem; font-weight: 500; margin-bottom: 0.5rem;">Powered by</p>
+                            <a href="https://www.reef-scuba.org/" target="_blank" rel="noopener noreferrer">
+                                <img src="static/images/reef_scuba_logo.png" alt="REEF Scuba" style="height: 135px; max-width: 100%;">
+                            </a>
+                        </div>
+                        <div class="data-citation text-center">
+                            <p style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.4;">
+                                <strong>Data Source:</strong><br>
+                                Baird, A. H., Guest, J. R., Edwards, A. J., Bauman, A. G., Bouwmeester, J., Mera, H., Abrego, D., Alvarez‑Noriega, M., Babcock, R. C., Barbosa, M. B., Bonito, V., Burt, J., Cabaitan, P. C., Chang, C.-F., Chavanich, S., … Yusuf, S. (2021). An Indo‑Pacific coral spawning database. <em>Scientific Data</em>, 8, 35. 
+                                <a href="https://doi.org/10.1038/s41597-020-00793-8" target="_blank" style="color: var(--text-secondary); text-decoration: underline;">https://doi.org/10.1038/s41597-020-00793-8</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Dashboard (65%) -->
+            <div class="col-md-8 dashboard-panel" id="mobile-results-panel">
+                <div class="dashboard-content">
+                    <!-- Results Summary -->
+                    <div class="results-summary">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h3 class="summary-title">
+                                <i class="fas fa-list me-2"></i>
+                                <span id="results-count">0</span> spawning events found
+                            </h3>
+                            <div class="loading-indicator d-none" id="loading-indicator">
+                                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Refinement Filters -->
+                    <div class="filters-section" id="filters-section" style="display: none;">
+                        <div class="section-header mb-2" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" style="cursor: pointer;">
+                            <h5 class="mb-0 d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-filter me-2"></i>Refine Results</span>
+                                <i class="fas fa-chevron-down fs-6"></i>
+                            </h5>
+                        </div>
+                        <div class="collapse d-md-block" id="filtersCollapse">
+                            <div class="filters-container p-3 mb-3">
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <label for="year-filter" class="form-label">Year</label>
+                                    <select class="form-select form-select-sm" id="year-filter">
+                                        <option value="all">All years</option>
+                                        <option value="last_5">Last 5 years</option>
+                                        <option value="last_10">Last 10 years</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="month-filter" class="form-label">Month</label>
+                                    <select class="form-select form-select-sm" id="month-filter">
+                                        <option value="all">All months</option>
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option>
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option>
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="days-filter" class="form-label">Days After Full Moon</label>
+                                    <select class="form-select form-select-sm" id="days-filter">
+                                        <option value="all">All days</option>
+                                        <option value="-15">-15 days</option>
+                                        <option value="-14">-14 days</option>
+                                        <option value="-13">-13 days</option>
+                                        <option value="-12">-12 days</option>
+                                        <option value="-11">-11 days</option>
+                                        <option value="-10">-10 days</option>
+                                        <option value="-9">-9 days</option>
+                                        <option value="-8">-8 days</option>
+                                        <option value="-7">-7 days</option>
+                                        <option value="-6">-6 days</option>
+                                        <option value="-5">-5 days</option>
+                                        <option value="-4">-4 days</option>
+                                        <option value="-3">-3 days</option>
+                                        <option value="-2">-2 days</option>
+                                        <option value="-1">-1 day</option>
+                                        <option value="0">0 days</option>
+                                        <option value="1">1 day</option>
+                                        <option value="2">2 days</option>
+                                        <option value="3">3 days</option>
+                                        <option value="4">4 days</option>
+                                        <option value="5">5 days</option>
+                                        <option value="6">6 days</option>
+                                        <option value="7">7 days</option>
+                                        <option value="8">8 days</option>
+                                        <option value="9">9 days</option>
+                                        <option value="10">10 days</option>
+                                        <option value="11">11 days</option>
+                                        <option value="12">12 days</option>
+                                        <option value="13">13 days</option>
+                                        <option value="14">14 days</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="species-filter" class="form-label">Genus</label>
+                                    <select class="form-select form-select-sm" id="species-filter">
+                                        <option value="all">All genera</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="situation-filter" class="form-label">Observation Type</label>
+                                    <select class="form-select form-select-sm" id="situation-filter">
+                                        <option value="all">All types</option>
+                                        <option value="In situ">In situ</option>
+                                        <option value="Ex situ">Ex situ</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        
+                        <!-- Search Summary -->
+                        <div class="search-summary" id="search-summary" style="display: none;">
+                            <div class="section-header mb-2">
+                                <h6><i class="fas fa-chart-bar me-2"></i>Search Summary</h6>
+                            </div>
+                            <div class="summary-content p-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6 style="color: #a0aec0;" class="mb-2">Available Months:</h6>
+                                        <div id="available-months" class="summary-tags"></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6 style="color: #a0aec0;" class="mb-2">Days After Full Moon:</h6>
+                                        <div id="available-days" class="summary-tags"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results Cards -->
+                    <div class="results-section">
+                        <div id="results-container">
+                            <div class="empty-state" id="empty-state">
+                                <div class="empty-state-content">
+                                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                                    <h4 class="text-muted">Start Your Search</h4>
+                                    <p class="text-muted" style="line-height: 1.6;">
+                                        Select a location on the map, set your search radius, and click "Search Spawning Events" to find coral spawning data in your area.
+                                        <br><br>
+                                        <small style="opacity: 0.85;"><em>Note: All data is from the Indo-Pacific Coral Spawning Database.</em></small>
+                                    </p>
+                                </div>
+                            </div>
+                            <div id="events-grid" class="events-grid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Detail Modal -->
+    <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventModalLabel">Spawning Event Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="eventModalBody">
+                    <!-- Event details will be populated here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile App Bottom Navigation -->
+    <div class="mobile-bottom-nav d-none">
+        <button class="btn-nav active" id="nav-map-btn" onclick="showMobileView('map')">
+            <i class="fas fa-search-location"></i>
+            <span>Search</span>
+        </button>
+        <button class="btn-nav" id="nav-results-btn" onclick="showMobileView('results')">
+            <i class="fas fa-list"></i>
+            <span style="position:relative">
+                Results 
+                <span class="badge bg-primary position-absolute top-0 start-100 translate-middle rounded-pill" id="mobile-badge" style="font-size:0.6rem;display:none;">0</span>
+            </span>
+        <button class="btn-nav" id="nav-export-btn" onclick="showMobileView('export')">
+            <i class="fas fa-download"></i>
+            <span>Export</span>
+        </button>
+    </div>
+
+    <!-- Redesigned PDF Export (Two-Page Layout) -->
+    <div id="pdf-export-container" style="display: none; background: white; color: #1a1a1a; font-family: 'Segoe UI', Arial, sans-serif;">
+
+        <!-- ══ PAGE 1: Overview ══ -->
+        <div style="padding: 48px 52px 36px; box-sizing: border-box;">
+
+            <!-- Header -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 4px solid #ec2547; padding-bottom: 16px; margin-bottom: 20px;">
+                <div>
+                    <h1 style="margin: 0 0 6px; font-size: 26px; font-weight: 700; color: #111;">Coral Spawning Dive Plan</h1>
+                    <div id="pdf-meta-line" style="font-size: 12px; color: #888; line-height: 1.8;"></div>
+                </div>
+                <img src="static/images/reef_logo_color.png" alt="REEF Scuba" style="height: 64px; flex-shrink: 0; margin-top: 2px;">
+            </div>
+
+            <!-- Stats Row -->
+            <div id="pdf-stats-row" style="display: flex; gap: 10px; margin-bottom: 20px;"></div>
+
+            <!-- Map + Genus Breakdown -->
+            <div style="display: flex; gap: 20px; margin-bottom: 20px; align-items: flex-start;">
+                <div style="flex: 1.6; min-width: 0;">
+                    <div style="font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #0a4275; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px; margin-bottom: 10px;">Search Area</div>
+                    <div style="height: 200px; border: 1px solid #ddd; border-radius: 6px; overflow: hidden; background: #dde8f0; position: relative;">
+                        <img id="pdf-map-snapshot" style="width: 100%; height: 200px; display: block;" alt="Map snapshot">
+                        <!-- Circle overlay: sized by JS using zoom-based formula; always centered -->
+                        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;overflow:hidden;">
+                            <div id="pdf-map-circle" style="border:2px dashed rgba(236,37,71,0.8);border-radius:50%;flex-shrink:0;display:none;"></div>
+                        </div>
+                        <!-- Pin overlay: solid red dot always at the exact center of the map image -->
+                        <div id="pdf-map-pin" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:10px;height:10px;border-radius:50%;background:#ec2547;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,0.5);pointer-events:none;display:none;"></div>
+                    </div>
+                    <p style="font-size: 10px; color: #aaa; text-align: right; margin: 4px 0 0;">Dashed circle = search radius</p>
+                </div>
+                <div style="flex: 1; min-width: 0;">
+                    <div style="font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #0a4275; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px; margin-bottom: 10px;">Top Genera</div>
+                    <div id="pdf-genus-bars"></div>
+                </div>
+            </div>
+
+            <!-- Charts (stacked vertically for clarity) -->
+            <div>
+                <div style="margin-bottom: 16px;">
+                    <div style="font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #0a4275; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px; margin-bottom: 10px;">Events by Month</div>
+                    <div style="height: 140px;"><canvas id="pdf-chart-months"></canvas></div>
+                </div>
+                <div>
+                    <div style="font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #0a4275; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px; margin-bottom: 10px;">Lunar Phase Distribution</div>
+                    <div style="height: 140px;"><canvas id="pdf-chart-lunar"></canvas></div>
+                </div>
+            </div>
+
+            <div style="margin-top: 24px; border-top: 1px solid #eee; padding-top: 10px; font-size: 9.5px; color: #bbb; text-align: center;">
+                REEF Scuba Coral Spawning Tracker &nbsp;&bull;&nbsp; Data: Baird et al. (2021), Scientific Data 8:35
+            </div>
+        </div>
+
+        <!-- ══ PAGE 2: Events Table ══ -->
+        <div style="padding: 48px 52px 40px; page-break-before: always; box-sizing: border-box;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 4px solid #ec2547; padding-bottom: 12px; margin-bottom: 18px;">
+                <div>
+                    <h2 style="margin: 0; font-size: 22px; font-weight: 700; color: #111;">Spawning Event Records</h2>
+                    <p id="pdf-table-subtitle" style="margin: 4px 0 0; font-size: 12px; color: #888;"></p>
+                </div>
+                <img src="static/images/reef_logo_color.png" alt="REEF Scuba" style="height: 48px; flex-shrink: 0;">
+            </div>
+
+            <table style="width: 100%; border-collapse: collapse; font-size: 10.5px;">
+                <thead>
+                    <tr style="background: #0a4275; color: white; text-align: left;">
+                        <th style="padding: 8px 8px;">Species</th>
+                        <th style="padding: 8px 8px;">Location</th>
+                        <th style="padding: 8px 6px; text-align: center;">Date</th>
+                        <th style="padding: 8px 6px; text-align: center;">Dist (km)</th>
+                        <th style="padding: 8px 6px; text-align: center;">Days After FM</th>
+                        <th style="padding: 8px 6px; text-align: center;">Type</th>
+                    </tr>
+                </thead>
+                <tbody id="pdf-table-body"></tbody>
+            </table>
+
+            <div style="margin-top: 24px; border-top: 1px solid #eee; padding-top: 12px;">
+                <p style="font-size: 9px; color: #aaa; margin: 0 0 3px;">Data Source: Baird, A. H., Guest, J. R., et al. (2021). An Indo-Pacific coral spawning database. <em>Scientific Data</em>, 8, 35. https://doi.org/10.1038/s41597-020-00793-8</p>
+                <p style="font-size: 9px; color: #aaa; margin: 0;">Generated by REEF Scuba Coral Spawning Tracker &nbsp;&bull;&nbsp; www.reef-scuba.org</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js"></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="static/js/map.js"></script>
+    <script src="static/js/filters.js"></script>
+    <!-- Background Map for Isolated Snapshot (Physically Rendered for Canvas Capture) -->
+    <div id="map-capture" style="position: fixed; top: 0; left: 0; width: 800px; height: 480px; z-index: -2000; display: block; visibility: visible;"></div>
+</body>
+</html>

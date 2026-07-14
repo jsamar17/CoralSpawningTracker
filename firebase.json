@@ -1,0 +1,25 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "__pycache__/**",
+      "app.py",
+      "main.py",
+      "routes.py",
+      "pyproject.toml",
+      "uv.lock",
+      "replit.md",
+      "fetch_images.py",
+      "fetch_missing_species.py",
+      "tmp_analyze.py",
+      "tmp_missing_species.py",
+      "tmp_test_filters.js",
+      "data/**",
+      "attached_assets/**",
+      "squarespace_deployment/**"
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+CORAL SPAWNING DATABASE - DATA UPDATE INSTRUCTIONS
+
+To update the coral spawning data or species information in your Squarespace deployment:
+
+1. LOCATE THE DATA SECTIONS in coral-spawning-app.js:
+   - Find "const CORAL_SPAWNING_DATA = [" (around line 9)
+   - Find "const CORAL_SPECIES_DATA = {" (around line 25)
+
+2. UPDATE SPAWNING DATA:
+   Replace the entire CORAL_SPAWNING_DATA array with your new data.
+   Each event should have this structure:
+   {
+     "id": unique_number,
+     "genus": "Genus_name",
+     "species": "species_name", 
+     "location": "Location description",
+     "latitude": decimal_latitude,
+     "longitude": decimal_longitude,
+     "date": "YYYY-MM-DD",
+     "start_time": "HH:MM",
+     "end_time": "HH:MM",
+     "days_after_full_moon": integer,
+     "gamete_release": "Type of release",
+     "situation": "In situ/Ex situ/etc",
+     "timezone": "timezone_offset",
+     "reference": "Study reference",
+     "image_url": "https://link-to-image.jpg"
+   }
+
+3. UPDATE SPECIES DATA:
+   Replace the entire CORAL_SPECIES_DATA object with your genus information:
+   {
+     "Genus_Name": {
+       "description": "Description of the genus",
+       "common_name": "Common name",
+       "spawning_pattern": "Spawning pattern description",
+       "image_url": "https://link-to-genus-image.jpg"
+     }
+   }
+
+4. REPLACE THE LOGO:
+   - Upload your REEF SCUBA logo to Squarespace
+   - Update the image src in index.html to point to your uploaded logo
+
+5. UPLOAD TO SQUARESPACE:
+   - Upload the updated coral-spawning-app.js to your Squarespace custom files
+   - The changes will take effect immediately
+
+IMPORTANT NOTES:
+- Keep the JavaScript syntax correct (commas, brackets, quotes)
+- Ensure all image URLs are accessible from the internet
+- Test the application after updates to verify everything works
+- Keep backups of your data files
+
+The current deployment includes all 6,178+ spawning events and 61 coral genera from your database.

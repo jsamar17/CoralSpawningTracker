@@ -1,0 +1,25 @@
+{
+  "name": "coralspawningtracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "tmp_test_filters.js",
+  "scripts": {
+    "build": "node build.js",
+    "cap:sync": "node build.js && npx cap sync"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@capacitor/android": "^8.3.0",
+    "@capacitor/cli": "^8.3.0",
+    "@capacitor/core": "^8.3.0",
+    "@capacitor/filesystem": "^8.1.2",
+    "@capacitor/geolocation": "^8.2.0",
+    "@capacitor/share": "^8.0.1"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5"
+  }
+}

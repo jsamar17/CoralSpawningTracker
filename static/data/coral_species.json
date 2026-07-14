@@ -1,0 +1,368 @@
+{
+  "Porites": {
+    "description": "Massive boulder corals, long-lived species",
+    "common_name": "Boulder Coral",
+    "spawning_pattern": "Annual synchronous spawning, extended season",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/76/Caribbean_Porites.JPG"
+  },
+  "Acropora": {
+    "description": "Staghorn and table corals, dominant reef builders in Indo-Pacific",
+    "common_name": "Staghorn Coral",
+    "spawning_pattern": "Annual synchronous spawning, typically 2-6 days after full moon",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Acropora_pulchra.jpg"
+  },
+  "Merulina": {
+    "description": "Merulina coral species",
+    "common_name": "Merulina Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Merulina_%2848740137698%29.jpg"
+  },
+  "Montipora": {
+    "description": "Plate and encrusting corals",
+    "common_name": "Plate Coral",
+    "spawning_pattern": "Annual synchronous spawning",
+    "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/625751061/medium.jpg"
+  },
+  "Oxypora": {
+    "description": "Oxypora coral species",
+    "common_name": "Oxypora Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Oxypora_glabra.JPG"
+  },
+  "Lobophyllia": {
+    "description": "Lobophyllia coral species",
+    "common_name": "Lobophyllia Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/6a/Lobophyllia_hemprichii_1.jpg"
+  },
+  "Astreopora": {
+    "description": "Astreopora coral species",
+    "common_name": "Astreopora Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/09/Coral_%28Astreopora_myriophthalma%29%2C_parque_nacional_Ras_Muhammad%2C_Egipto%2C_2022-03-28%2C_DD_105.jpg"
+  },
+  "Australogyra": {
+    "description": "Australogyra coral species",
+    "common_name": "Australogyra Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Australogyra_zelli.JPG"
+  },
+  "Echinophyllia": {
+    "description": "Echinophyllia coral species",
+    "common_name": "Echinophyllia Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Echinophyllia_tarae%2C_variaciones_2.jpg"
+  },
+  "Favites": {
+    "description": "Favites coral species",
+    "common_name": "Favites Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Favites_pentagona_1.JPG"
+  },
+  "Goniastrea": {
+    "description": "Goniastrea coral species",
+    "common_name": "Goniastrea Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Faviidae_-_Goniastrea_retiformis.JPG"
+  },
+  "Mycedium": {
+    "description": "Mycedium coral species",
+    "common_name": "Mycedium Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/627943534/medium.jpg"
+  },
+  "Sandalolitha": {
+    "description": "Sandalolitha coral species",
+    "common_name": "Sandalolitha Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/61/Sandalolitha_dentata.jpg"
+  },
+  "Astrea": {
+    "description": "Astrea coral species",
+    "common_name": "Astrea Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/626156892/medium.jpg"
+  },
+  "Dipsastraea": {
+    "description": "Dipsastraea coral species",
+    "common_name": "Dipsastraea Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/73/Dipsastraea_maxima.jpg"
+  },
+  "Platygyra": {
+    "description": "Brain corals with meandering valleys",
+    "common_name": "Brain Coral",
+    "spawning_pattern": "Annual synchronous spawning",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Platygyra_lamellina_%28Hard_brain_coral%29.jpg"
+  },
+  "Cyphastrea": {
+    "description": "Cyphastrea coral species",
+    "common_name": "Cyphastrea Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/65/Cyphastrea_serailia.jpg"
+  },
+  "Physogyra": {
+    "description": "Physogyra coral species",
+    "common_name": "Physogyra Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/96/Physogyra_Lichtensteini.jpg"
+  },
+  "Pectinia": {
+    "description": "Pectinia coral species",
+    "common_name": "Pectinia Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Hibiscus_Coral_%28Pectinia_paeonia%29_%288482773008%29.jpg"
+  },
+  "Coelastrea": {
+    "description": "Coelastrea coral species",
+    "common_name": "Coelastrea Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Coelastrea_aspera_%28recorte%29.png"
+  },
+  "Fungia": {
+    "description": "Fungia coral species",
+    "common_name": "Fungia Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/dc/Fungiafungites.jpg"
+  },
+  "Turbinaria": {
+    "description": "Turbinaria coral species",
+    "common_name": "Turbinaria Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Turbinaria_stellulata%2C_p%C3%B3lipos.jpeg"
+  },
+  "Diploastrea": {
+    "description": "Diploastrea coral species",
+    "common_name": "Diploastrea Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Helcogramma_striata_%28Neon_triplefin%29_on_Diploastrea_heliopora_%28Hard_coral%29.jpg"
+  },
+  "Paragoniastrea": {
+    "description": "Paragoniastrea coral species",
+    "common_name": "Paragoniastrea Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Paragoniastrea_australensis%2C_isla_Aureed.jpg"
+  },
+  "Leptoria": {
+    "description": "Leptoria coral species",
+    "common_name": "Leptoria Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/86/Leptoria_phrygia.jpg"
+  },
+  "Stylophora": {
+    "description": "Finger corals, brooding species",
+    "common_name": "Finger Coral",
+    "spawning_pattern": "Monthly brooding cycles",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/3a/Stylophora_subseriata-2.jpg"
+  },
+  "Acanthastrea": {
+    "description": "Acanthastrea coral species",
+    "common_name": "Acanthastrea Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/69/Acanthastrea_echinata.jpg"
+  },
+  "Blastomussa": {
+    "description": "Blastomussa coral species",
+    "common_name": "Blastomussa Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/70/Blastomussa_wellsi.JPG"
+  },
+  "Euphyllia": {
+    "description": "Euphyllia coral species",
+    "common_name": "Euphyllia Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/62/Euphyllia_sp.jpg"
+  },
+  "Galaxea": {
+    "description": "Galaxy corals with long tentacles",
+    "common_name": "Galaxy Coral",
+    "spawning_pattern": "Annual synchronous spawning",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Coral_%28Galaxea_fascicularis%29%2C_mar_Rojo%2C_Egipto%2C_2023-04-18%2C_DD_65.jpg"
+  },
+  "Plesiastrea": {
+    "description": "Plesiastrea coral species",
+    "common_name": "Plesiastrea Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/48/Plesiastrea_versipora%2C_in_situ.jpg"
+  },
+  "Goniopora": {
+    "description": "Goniopora coral species",
+    "common_name": "Goniopora Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Goniopora_closeup.jpg"
+  },
+  "Oulophyllia": {
+    "description": "Oulophyllia coral species",
+    "common_name": "Oulophyllia Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/37/Oulophyllia_crispa.jpg"
+  },
+  "Echinopora": {
+    "description": "Echinopora coral species",
+    "common_name": "Echinopora Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/ed/Faviidae_-_Echinopora_fruticolosa.JPG"
+  },
+  "Pocillopora": {
+    "description": "Cauliflower corals, brooding species",
+    "common_name": "Cauliflower Coral",
+    "spawning_pattern": "Monthly brooding cycles",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/ed/Pocillopora_meandrina_with_a_resident_fish.jpg"
+  },
+  "Hydnophora": {
+    "description": "Hydnophora coral species",
+    "common_name": "Hydnophora Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/12/Hydnophora_exesa%2C_Lizard.jpeg"
+  },
+  "Homophyllia": {
+    "description": "Homophyllia coral species",
+    "common_name": "Homophyllia Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/626531208/medium.jpg"
+  },
+  "Lithophyllon": {
+    "description": "Lithophyllon coral species",
+    "common_name": "Lithophyllon Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/4b/Lithophyllon_edwardsi-1.jpg"
+  },
+  "Heliofungia": {
+    "description": "Heliofungia coral species",
+    "common_name": "Heliofungia Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Heliofungia_actiniformis_r.jpg"
+  },
+  "Pachyseris": {
+    "description": "Pachyseris coral species",
+    "common_name": "Pachyseris Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/622805294/medium.jpg"
+  },
+  "Polyphyllia": {
+    "description": "Polyphyllia coral species",
+    "common_name": "Polyphyllia Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/22/Polyphyllia_talpina%2C_Layang-Layang.jpg"
+  },
+  "Moseleya": {
+    "description": "Moseleya coral species",
+    "common_name": "Moseleya Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/609336045/medium.jpg"
+  },
+  "Caulastraea": {
+    "description": "Caulastraea coral species",
+    "common_name": "Caulastraea Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/66/Caulastraea_1.jpg"
+  },
+  "Scapophyllia": {
+    "description": "Scapophyllia coral species",
+    "common_name": "Scapophyllia Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/629440241/medium.jpg"
+  },
+  "Pleuractis": {
+    "description": "Pleuractis coral species",
+    "common_name": "Pleuractis Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Pleuractis_paumotensis.jpg"
+  },
+  "Ctenactis": {
+    "description": "Ctenactis coral species",
+    "common_name": "Ctenactis Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/26/Ctenactis_echinata.jpg"
+  },
+  "Danafungia": {
+    "description": "Danafungia coral species",
+    "common_name": "Danafungia Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/10/Danafungia_horrida%2C_Samoa_Americana.gif"
+  },
+  "Coeloseris": {
+    "description": "Coeloseris coral species",
+    "common_name": "Coeloseris Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/625950034/medium.jpg"
+  },
+  "Psammocora": {
+    "description": "Psammocora coral species",
+    "common_name": "Psammocora Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/ac/Psammocora_profundacella_R%C3%A9union.jpg"
+  },
+  "Alveopora": {
+    "description": "Alveopora coral species",
+    "common_name": "Alveopora Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/2e/Alveopora.jpg"
+  },
+  "Pavona": {
+    "description": "Pavona coral species",
+    "common_name": "Pavona Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/2d/Potato_Chip_Coral_%28Pavona_cactus%29_-_GRB.jpg"
+  },
+  "Anacropora": {
+    "description": "Anacropora coral species",
+    "common_name": "Anacropora Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a5/Anacropora_gracilis_and_Anacropora_solida.jpg"
+  },
+  "Micromussa": {
+    "description": "Micromussa coral species",
+    "common_name": "Micromussa Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/627940164/medium.jpg"
+  },
+  "Tubastraea": {
+    "description": "Tubastraea coral species",
+    "common_name": "Tubastraea Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Dendrophylliidae_-_Tubastraea_faulkneri_%28Orange_Sun_Coral%29.jpg"
+  },
+  "Lobactis": {
+    "description": "Lobactis coral species",
+    "common_name": "Lobactis Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Lobactis_scutaria%2C_Koh_Phangan.jpg"
+  },
+  "Leptastrea": {
+    "description": "Leptastrea coral species",
+    "common_name": "Leptastrea Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/d6/Leptastrea_bewickensis.jpg"
+  },
+  "Herpolitha": {
+    "description": "Herpolitha coral species",
+    "common_name": "Herpolitha Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Herpolitha_limax.jpg"
+  },
+  "Duncanopsammia": {
+    "description": "Duncanopsammia coral species",
+    "common_name": "Duncanopsammia Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/78/Duncanopsammia.jpg"
+  },
+  "Palauastrea": {
+    "description": "Palauastrea coral species",
+    "common_name": "Palauastrea Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://inaturalist-open-data.s3.amazonaws.com/photos/606306476/medium.jpg"
+  },
+  "Plerogyra": {
+    "description": "Plerogyra coral species",
+    "common_name": "Plerogyra Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Plerogyra_sinuosa_%28Bubble_coral%29_Timor.jpg"
+  },
+  "Leptoseris": {
+    "description": "Leptoseris coral species",
+    "common_name": "Leptoseris Coral",
+    "spawning_pattern": "Variable - see individual records",
+    "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/b0/Leptoseris_yabei%2C_in_situ.jpg"
+  }
+}

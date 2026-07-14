@@ -1,0 +1,48 @@
+Core Concept
+The website will function like a specialized search engine for coral spawning events, similar to a hotel or flight search website. The goal is to provide a user-friendly, visually appealing interface for querying a coral spawning database based on geographic location and then refining the results.
+
+Final Layout & Interface
+The screen will be divided into two main, vertically-aligned sections with a clean, professional, and calming dark color scheme.
+
+Left-Side Panel (Control Panel):
+
+Interactive Map: A large, vertically-oriented map for location selection. The user can have their location auto-detected, search for a location, or manually select one.
+
+Distance Slider: A slider located directly below the map to specify a search radius (in miles or kilometers) around the selected location.
+
+Export Button: An option to export the filtered search results, located below the distance slider.
+
+Right-Side Panel (Dashboard - 65% of screen width):
+
+This entire panel is independently scrollable, so the user can browse results without the map and controls on the left moving.
+
+Results Summary: A count of the total "spawning events found" is displayed at the top.
+
+Refinement Filters: Below the summary, there is a 2x2 grid of dropdown menus to filter the results that are currently displayed. The dropdowns are:
+
+Year: With options for "Last 5 years," "Last 10 years," or a specific year.
+
+Month.
+
+Days After Full Moon.
+
+Species/Genera: This dropdown will be dynamically populated based on the genera present in the initial search results.
+
+Results Cards: The main area of the dashboard is populated with individual "cards," each representing a single spawning event from the database that matches the query. Each card will contain:
+
+A picture of the coral genera.
+
+Detailed information about that specific event (e.g., species name, date, specific location, and publication details).
+
+User Workflow
+The user visits the site and selects a location on the map.
+
+They adjust the distance slider to set their desired search area.
+
+The dashboard on the right instantly queries the database and populates with cards representing all spawning events within that geographic area.
+
+The user can then scroll through these event cards.
+
+If needed, they can use the dropdown filters at the top of the dashboard to narrow down the results (e.g., only show events from a specific year or for a particular genus).
+
+Finally, the user has the option to export their filtered list of results.

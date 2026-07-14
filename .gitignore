@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+www/
+
+# Python
+__pycache__/
+*.pyc
+uv.lock
+
+# Firebase
+.firebase/
+
+# Capacitor build artifacts
+*.aab
+*.apk
+*.keystore
+
+# Temporary comparison files
+live_comparison/
+
+# IDE / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
