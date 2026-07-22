@@ -3,10 +3,14 @@ let selectedMarker = null;
 let speciesDataCache = null;
 let genusTomSelect = null;
 let speciesTomSelect = null;
+let gameteTomSelect = null;
+let situationTomSelect = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     initMap();
     loadSpeciesData();
+    initGameteTomSelect();
+    initSituationTomSelect();
     wireEvents();
 });
 
@@ -99,7 +103,7 @@ function populateGenusSelect() {
 
     genusTomSelect = new TomSelect('#genus', {
         maxOptions: 100,
-        placeholder: 'Search genus...',
+        placeholder: 'Select Genus',
         allowEmptyOption: true,
         onChange: onGenusChange
     });
@@ -111,7 +115,7 @@ function buildSpeciesOptions(genus) {
 
     const placeholder = document.createElement('option');
     placeholder.value = '';
-    placeholder.textContent = genus ? '-- Select Species --' : '-- Select Genus First --';
+    placeholder.textContent = genus ? 'Select Species' : 'Select Genus First';
     speciesSelect.appendChild(placeholder);
 
     if (genus && speciesDataCache[genus]) {
@@ -130,7 +134,7 @@ function initSpeciesTomSelect() {
     }
     speciesTomSelect = new TomSelect('#species', {
         maxOptions: 100,
-        placeholder: 'Search species...',
+        placeholder: 'Select Species',
         allowEmptyOption: true,
         onChange: checkFormValid
     });
@@ -140,6 +144,22 @@ function onGenusChange(genus) {
     buildSpeciesOptions(genus);
     initSpeciesTomSelect();
     checkFormValid();
+}
+
+function initGameteTomSelect() {
+    gameteTomSelect = new TomSelect('#gamete-release', {
+        maxOptions: 100,
+        placeholder: 'Select Gamete Release',
+        allowEmptyOption: true
+    });
+}
+
+function initSituationTomSelect() {
+    situationTomSelect = new TomSelect('#situation', {
+        maxOptions: 100,
+        placeholder: 'Select Type',
+        allowEmptyOption: true
+    });
 }
 
 function wireEvents() {
@@ -236,13 +256,13 @@ function resetForm() {
     genusTomSelect.clear();
     buildSpeciesOptions('');
     initSpeciesTomSelect();
+    gameteTomSelect.clear();
+    situationTomSelect.clear();
     document.getElementById('location-name').value = '';
     document.getElementById('obs-date').value = '';
     document.getElementById('start-time').value = '';
     document.getElementById('end-time').value = '';
     document.getElementById('days-after-fm').value = '';
-    document.getElementById('gamete-release').value = '';
-    document.getElementById('situation').value = 'In situ';
     document.getElementById('reference').value = '';
     document.getElementById('submitted-by').value = '';
     document.getElementById('latitude').value = '';

@@ -21,8 +21,22 @@ uv.lock
 # Temporary comparison files
 live_comparison/
 
+# Manual test scripts
+manual_tests/
+
 # IDE / OS
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
+
+# AI context files
+AGENTS.md
+CLAUDE.md
+PLAN.md
+opencode.json
+opencode.jsonc
+.cursor/
+.cursorrules
+.github/copilot-instructions.md
+Screenshot\ 2026-07-22 135547.png
