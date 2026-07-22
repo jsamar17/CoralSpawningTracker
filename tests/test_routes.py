@@ -60,3 +60,36 @@ def test_submit_observation_persists():
     client.post('/api/submit', json=_make_payload())
     client.post('/api/submit', json=_make_payload(species='cytherea'))
     assert len(s.load_submissions()) == 2
+
+
+def test_submit_page_contains_form_fields():
+    client = app.test_client()
+    resp = client.get('/submit')
+    html = resp.data.decode()
+    assert 'id="genus"' in html
+    assert 'id="species"' in html
+    assert 'id="location-name"' in html
+    assert 'id="obs-date"' in html
+    assert 'id="submit-map"' in html
+    assert 'id="submit-btn"' in html
+    assert 'id="genus-list"' in html
+    assert 'id="species-list"' in html
+
+
+def test_submit_observation_full_payload():
+    client = app.test_client()
+    payload = _make_payload(
+        start_time='20:30',
+        end_time='21:00',
+        days_after_full_moon=3,
+        gamete_release='Sperm',
+        situation='In situ',
+        reference='Test Ref 2024',
+        submitted_by='tester',
+    )
+    resp = client.post('/api/submit', json=payload)
+    assert resp.status_code == 201
+    body = resp.get_json()
+    assert body['submission']['start_time'] == '20:30'
+    assert body['submission']['days_after_full_moon'] == 3
+    assert body['submission']['submitted_by'] == 'tester'
