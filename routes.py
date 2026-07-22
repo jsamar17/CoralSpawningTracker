@@ -6,6 +6,7 @@ from flask import jsonify, request, render_template
 from geopy.distance import geodesic
 
 from app import app
+from services import submission_service
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -216,3 +217,42 @@ def export_results():
             'success': False,
             'error': str(e)
         })
+
+
+@app.route('/submit')
+def submit_form():
+    """Render the user submission form."""
+    return render_template('submit.html')
+
+
+@app.route('/api/submit', methods=['POST'])
+def submit_observation():
+    """Accept a new coral spawning observation."""
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({
+                'success': False,
+                'error': 'Request body must be JSON'
+            }), 400
+
+        required_fields = ['genus', 'species', 'location', 'latitude', 'longitude', 'date']
+        missing = [f for f in required_fields if not data.get(f)]
+        if missing:
+            return jsonify({
+                'success': False,
+                'error': f'Missing required fields: {", ".join(missing)}'
+            }), 400
+
+        submission = submission_service.add_submission(data)
+        return jsonify({
+            'success': True,
+            'submission': submission
+        }), 201
+
+    except Exception as e:
+        logging.error(f"Submission error: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
