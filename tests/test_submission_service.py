@@ -104,3 +104,27 @@ def test_malformed_json_recovery():
         pass
     s.clear_user_data()
     assert s.load_submissions() == []
+
+
+def test_seed_submissions():
+    records = [
+        {'genus': 'Acropora', 'species': 'millepora', 'location': 'R1',
+         'latitude': -15.0, 'longitude': 147.0, 'date': '2024-01-01'},
+        {'genus': 'Porites', 'species': 'lobata', 'location': 'R2',
+         'latitude': -15.1, 'longitude': 147.1, 'date': '2024-02-01'},
+    ]
+    count = s.seed_submissions(records)
+    assert count == 2
+    subs = s.load_submissions()
+    assert len(subs) == 2
+    assert all(sub['id'] is not None for sub in subs)
+    assert all(sub['submitted_at'] is not None for sub in subs)
+
+
+def test_seed_submissions_appends():
+    s.add_submission(_make_submission())
+    s.seed_submissions([
+        {'genus': 'Porites', 'species': 'lobata', 'location': 'R1',
+         'latitude': -15.0, 'longitude': 147.0, 'date': '2024-01-01'}
+    ])
+    assert len(s.load_submissions()) == 2

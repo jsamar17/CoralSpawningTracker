@@ -285,3 +285,54 @@ def list_submissions():
             'submissions': [],
             'count': 0
         })
+
+
+@app.route('/api/submissions/<submission_id>', methods=['DELETE'])
+def delete_submission(submission_id):
+    """Delete a single user submission by ID."""
+    try:
+        deleted = submission_service.delete_submission(submission_id)
+        if deleted:
+            return jsonify({'success': True})
+        return jsonify({'success': False, 'error': 'Submission not found'}), 404
+
+    except Exception as e:
+        logging.error(f"Delete submission error: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+@app.route('/debug')
+def debug_page():
+    """Render the debug console."""
+    return render_template('debug.html')
+
+
+@app.route('/api/debug/seed', methods=['POST'])
+def debug_seed():
+    """Seed random submissions for testing."""
+    try:
+        data = request.get_json()
+        records = data.get('submissions', [])
+        if not records:
+            return jsonify({
+                'success': False,
+                'error': 'No submissions provided'
+            }), 400
+        count = submission_service.seed_submissions(records)
+        return jsonify({'success': True, 'count': count})
+
+    except Exception as e:
+        logging.error(f"Debug seed error: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+@app.route('/api/debug/clear', methods=['POST'])
+def debug_clear():
+    """Clear all user submissions."""
+    try:
+        submission_service.clear_user_data()
+        return jsonify({'success': True})
+
+    except Exception as e:
+        logging.error(f"Debug clear error: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500

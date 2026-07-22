@@ -97,3 +97,14 @@ def delete_submission(submission_id):
 
 def clear_user_data():
     _write_all([])
+
+
+def seed_submissions(records):
+    existing = _read_all()
+    for rec in records:
+        rec['id'] = str(uuid.uuid4())
+        rec.setdefault('submitted_by', '')
+        rec.setdefault('submitted_at', datetime.now(timezone.utc).isoformat())
+        existing.append(rec)
+    _write_all(existing)
+    return len(records)
