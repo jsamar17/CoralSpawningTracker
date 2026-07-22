@@ -12,139 +12,136 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.bootstrap5.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body style="overflow: auto; height: auto;">
-    <div class="container-fluid" style="height: auto;">
-        <div class="row" style="height: auto;">
+<body>
+    <div class="submit-layout">
+        <!-- Left Panel: Map -->
+        <div class="submit-left-panel">
+            <div class="panel-content">
+                <div class="header-section">
+                    <a href="/" style="color: var(--accent-secondary); text-decoration: none; font-size: 0.9rem;">
+                        <i class="fas fa-arrow-left me-1"></i>Back to Search
+                    </a>
+                    <h2 class="panel-title mt-2">
+                        <i class="fas fa-plus-circle me-2"></i>Submit Observation
+                    </h2>
+                    <p class="panel-subtitle">Pin your spawning observation on the map</p>
+                </div>
 
-            <!-- Left Panel: Map -->
-            <div class="col-md-5 control-panel" style="max-height: 100vh; position: sticky; top: 0;">
-                <div class="panel-content">
-                    <div class="header-section">
-                        <a href="/" style="color: var(--accent-secondary); text-decoration: none; font-size: 0.9rem;">
-                            <i class="fas fa-arrow-left me-1"></i>Back to Search
-                        </a>
-                        <h2 class="panel-title mt-2">
-                            <i class="fas fa-plus-circle me-2"></i>Submit Observation
-                        </h2>
-                        <p class="panel-subtitle">Pin your spawning observation on the map</p>
+                <div class="map-section">
+                    <div id="submit-map" class="interactive-map"></div>
+
+                    <div class="location-controls mt-3">
+                        <div class="input-group mb-2">
+                            <input type="text" id="location-search" class="form-control" placeholder="Search for a location...">
+                            <button class="btn btn-outline-primary" type="button" id="search-btn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="map-section">
-                        <div id="submit-map" class="interactive-map" style="height: 300px;"></div>
-
-                        <div class="location-controls mt-3">
-                            <div class="input-group mb-2">
-                                <input type="text" id="location-search" class="form-control" placeholder="Search for a location...">
-                                <button class="btn btn-outline-primary" type="button" id="search-btn">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
+                    <div class="row g-2 mt-2">
+                        <div class="col-6">
+                            <label for="latitude" class="form-label">Latitude</label>
+                            <input type="number" step="any" class="form-control" id="latitude" readonly placeholder="Click map">
                         </div>
-
-                        <div class="row g-2 mt-2">
-                            <div class="col-6">
-                                <label for="latitude" class="form-label">Latitude</label>
-                                <input type="number" step="any" class="form-control" id="latitude" readonly placeholder="Click map">
-                            </div>
-                            <div class="col-6">
-                                <label for="longitude" class="form-label">Longitude</label>
-                                <input type="number" step="any" class="form-control" id="longitude" readonly placeholder="Click map">
-                            </div>
+                        <div class="col-6">
+                            <label for="longitude" class="form-label">Longitude</label>
+                            <input type="number" step="any" class="form-control" id="longitude" readonly placeholder="Click map">
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Right Panel: Form -->
-            <div class="col-md-7 dashboard-panel" style="max-height: 100vh; overflow-y: auto;">
-                <div class="dashboard-content p-4">
-                    <div id="alert-container"></div>
+        <!-- Right Panel: Form -->
+        <div class="submit-right-panel">
+            <div class="dashboard-content p-4">
+                <div id="alert-container"></div>
 
-                    <h4 class="mb-4" style="color: var(--text-secondary);">
-                        <i class="fas fa-edit me-2" style="color: var(--accent-primary);"></i>Observation Details
-                    </h4>
+                <h4 class="mb-4" style="color: var(--text-secondary);">
+                    <i class="fas fa-edit me-2" style="color: var(--accent-primary);"></i>Observation Details
+                </h4>
 
-                    <!-- Species -->
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label for="genus" class="form-label">Genus <span style="color: var(--accent-primary);">*</span></label>
-                            <select class="form-select" id="genus" required>
-                                <option value="">Select Genus</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="species" class="form-label">Species <span style="color: var(--accent-primary);">*</span></label>
-                            <select class="form-select" id="species" required>
-                                <option value="">Select Species</option>
-                            </select>
-                        </div>
+                <!-- Species -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label for="genus" class="form-label">Genus <span style="color: var(--accent-primary);">*</span></label>
+                        <select class="form-select" id="genus" required>
+                            <option value="">Select Genus</option>
+                        </select>
                     </div>
-
-                    <!-- Location -->
-                    <div class="mb-3">
-                        <label for="location-name" class="form-label">Location Name <span style="color: var(--accent-primary);">*</span></label>
-                        <input type="text" class="form-control" id="location-name" required placeholder="e.g. Great Barrier Reef, Australia">
+                    <div class="col-md-6">
+                        <label for="species" class="form-label">Species <span style="color: var(--accent-primary);">*</span></label>
+                        <select class="form-select" id="species" required>
+                            <option value="">Select Species</option>
+                        </select>
                     </div>
-
-                    <!-- Date & Time -->
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-4">
-                            <label for="obs-date" class="form-label">Date <span style="color: var(--accent-primary);">*</span></label>
-                            <input type="date" class="form-control" id="obs-date" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="start-time" class="form-label">Start Time</label>
-                            <input type="time" class="form-control" id="start-time">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="end-time" class="form-label">End Time</label>
-                            <input type="time" class="form-control" id="end-time">
-                        </div>
-                    </div>
-
-                    <!-- Lunar & Release -->
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-4">
-                            <label for="days-after-fm" class="form-label">Days After Full Moon</label>
-                            <input type="number" class="form-control" id="days-after-fm" placeholder="-15 to 14">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="gamete-release" class="form-label">Gamete Release</label>
-                            <select class="form-select" id="gamete-release">
-                                <option value="">Select Gamete Release</option>
-                                <option value="Sperm">Sperm</option>
-                                <option value="Egg">Egg</option>
-                                <option value="Bundle">Bundle</option>
-                                <option value="Unknown">Unknown</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="situation" class="form-label">Observation Type</label>
-                            <select class="form-select" id="situation">
-                                <option value="">Select Type</option>
-                                <option value="In situ">In situ</option>
-                                <option value="Ex situ">Ex situ</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Reference & Submitter -->
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-6">
-                            <label for="reference" class="form-label">Reference</label>
-                            <input type="text" class="form-control" id="reference" placeholder="e.g. Smith et al. 2023">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="submitted-by" class="form-label">Your Name</label>
-                            <input type="text" class="form-control" id="submitted-by" placeholder="Optional">
-                        </div>
-                    </div>
-
-                    <!-- Submit -->
-                    <button class="btn btn-primary btn-lg w-100" id="submit-btn" disabled>
-                        <i class="fas fa-paper-plane me-2"></i>Submit Observation
-                    </button>
                 </div>
+
+                <!-- Location -->
+                <div class="mb-3">
+                    <label for="location-name" class="form-label">Location Name <span style="color: var(--accent-primary);">*</span></label>
+                    <input type="text" class="form-control" id="location-name" required placeholder="e.g. Great Barrier Reef, Australia">
+                </div>
+
+                <!-- Date & Time -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label for="obs-date" class="form-label">Date <span style="color: var(--accent-primary);">*</span></label>
+                        <input type="date" class="form-control" id="obs-date" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="start-time" class="form-label">Start Time</label>
+                        <input type="time" class="form-control" id="start-time">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="end-time" class="form-label">End Time</label>
+                        <input type="time" class="form-control" id="end-time">
+                    </div>
+                </div>
+
+                <!-- Lunar & Release -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label for="days-after-fm" class="form-label">Days After Full Moon</label>
+                        <input type="number" class="form-control" id="days-after-fm" placeholder="-15 to 14">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="gamete-release" class="form-label">Gamete Release</label>
+                        <select class="form-select" id="gamete-release">
+                            <option value="">Select Gamete Release</option>
+                            <option value="Sperm">Sperm</option>
+                            <option value="Egg">Egg</option>
+                            <option value="Bundle">Bundle</option>
+                            <option value="Unknown">Unknown</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="situation" class="form-label">Observation Type</label>
+                        <select class="form-select" id="situation">
+                            <option value="">Select Type</option>
+                            <option value="In situ">In situ</option>
+                            <option value="Ex situ">Ex situ</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Reference & Submitter -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label for="reference" class="form-label">Reference</label>
+                        <input type="text" class="form-control" id="reference" placeholder="e.g. Smith et al. 2023">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="submitted-by" class="form-label">Your Name</label>
+                        <input type="text" class="form-control" id="submitted-by" placeholder="Optional">
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <button class="btn btn-primary btn-lg w-100" id="submit-btn" disabled>
+                    <i class="fas fa-paper-plane me-2"></i>Submit Observation
+                </button>
             </div>
         </div>
     </div>

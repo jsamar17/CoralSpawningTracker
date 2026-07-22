@@ -12,6 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initGameteTomSelect();
     initSituationTomSelect();
     wireEvents();
+
+    window.addEventListener('resize', () => {
+        if (map) map.invalidateSize();
+    });
 });
 
 function initMap() {
