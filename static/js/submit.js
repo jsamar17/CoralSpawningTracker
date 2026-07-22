@@ -1,5 +1,6 @@
 let map;
 let selectedMarker = null;
+let speciesDataCache = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     initMap();
@@ -60,27 +61,64 @@ function searchLocation() {
 }
 
 function loadSpeciesData() {
-    fetch('static/data/coral_species.json')
+    fetch('static/data/coral_spawning_data.json')
         .then(response => response.json())
         .then(data => {
-            const genusList = document.getElementById('genus-list');
-            const speciesList = document.getElementById('species-list');
-
-            Object.keys(data).sort().forEach(genus => {
-                const opt = document.createElement('option');
-                opt.value = genus;
-                genusList.appendChild(opt);
-
-                if (data[genus].species) {
-                    data[genus].species.forEach(sp => {
-                        const sOpt = document.createElement('option');
-                        sOpt.value = sp;
-                        speciesList.appendChild(sOpt);
-                    });
+            const speciesByGenus = {};
+            data.forEach(event => {
+                const genus = event.genus;
+                const species = event.species;
+                if (genus && species) {
+                    if (!speciesByGenus[genus]) {
+                        speciesByGenus[genus] = new Set();
+                    }
+                    speciesByGenus[genus].add(species);
                 }
             });
+
+            speciesDataCache = {};
+            Object.keys(speciesByGenus).sort().forEach(genus => {
+                speciesDataCache[genus] = Array.from(speciesByGenus[genus]).sort();
+            });
+
+            populateGenusSelect();
         })
         .catch(error => console.error('Error loading species data:', error));
+}
+
+function populateGenusSelect() {
+    const genusSelect = document.getElementById('genus');
+    Object.keys(speciesDataCache).forEach(genus => {
+        const opt = document.createElement('option');
+        opt.value = genus;
+        opt.textContent = genus;
+        genusSelect.appendChild(opt);
+    });
+}
+
+function populateSpeciesSelect(genus) {
+    const speciesSelect = document.getElementById('species');
+    speciesSelect.innerHTML = '';
+
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.textContent = genus ? '-- Select Species --' : '-- Select Genus First --';
+    speciesSelect.appendChild(placeholder);
+
+    if (genus && speciesDataCache[genus]) {
+        speciesDataCache[genus].forEach(sp => {
+            const opt = document.createElement('option');
+            opt.value = sp;
+            opt.textContent = sp;
+            speciesSelect.appendChild(opt);
+        });
+    }
+}
+
+function onGenusChange() {
+    const genus = document.getElementById('genus').value;
+    populateSpeciesSelect(genus);
+    checkFormValid();
 }
 
 function wireEvents() {
@@ -90,16 +128,17 @@ function wireEvents() {
         if (e.key === 'Enter') searchLocation();
     });
 
-    document.querySelectorAll('#genus, #species, #location-name, #obs-date').forEach(el => {
-        el.addEventListener('input', checkFormValid);
-    });
+    document.getElementById('genus').addEventListener('change', onGenusChange);
+    document.getElementById('species').addEventListener('change', checkFormValid);
+    document.getElementById('location-name').addEventListener('input', checkFormValid);
+    document.getElementById('obs-date').addEventListener('input', checkFormValid);
 
     document.getElementById('submit-btn').onclick = submitObservation;
 }
 
 function checkFormValid() {
-    const genus = document.getElementById('genus').value.trim();
-    const species = document.getElementById('species').value.trim();
+    const genus = document.getElementById('genus').value;
+    const species = document.getElementById('species').value;
     const location = document.getElementById('location-name').value.trim();
     const date = document.getElementById('obs-date').value;
     const lat = document.getElementById('latitude').value;
@@ -124,8 +163,8 @@ async function submitObservation() {
     btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
 
     const payload = {
-        genus: document.getElementById('genus').value.trim(),
-        species: document.getElementById('species').value.trim(),
+        genus: document.getElementById('genus').value,
+        species: document.getElementById('species').value,
         location: document.getElementById('location-name').value.trim(),
         latitude: parseFloat(document.getElementById('latitude').value),
         longitude: parseFloat(document.getElementById('longitude').value),
@@ -176,7 +215,7 @@ async function submitObservation() {
 
 function resetForm() {
     document.getElementById('genus').value = '';
-    document.getElementById('species').value = '';
+    populateSpeciesSelect('');
     document.getElementById('location-name').value = '';
     document.getElementById('obs-date').value = '';
     document.getElementById('start-time').value = '';

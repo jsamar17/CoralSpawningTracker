@@ -67,13 +67,15 @@
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <label for="genus" class="form-label">Genus <span style="color: var(--accent-primary);">*</span></label>
-                            <input type="text" class="form-control" id="genus" list="genus-list" required>
-                            <datalist id="genus-list"></datalist>
+                            <select class="form-select" id="genus" required>
+                                <option value="">-- Select Genus --</option>
+                            </select>
                         </div>
                         <div class="col-md-6">
                             <label for="species" class="form-label">Species <span style="color: var(--accent-primary);">*</span></label>
-                            <input type="text" class="form-control" id="species" list="species-list" required>
-                            <datalist id="species-list"></datalist>
+                            <select class="form-select" id="species" required>
+                                <option value="">-- Select Genus First --</option>
+                            </select>
                         </div>
                     </div>
 

@@ -72,8 +72,7 @@ def test_submit_page_contains_form_fields():
     assert 'id="obs-date"' in html
     assert 'id="submit-map"' in html
     assert 'id="submit-btn"' in html
-    assert 'id="genus-list"' in html
-    assert 'id="species-list"' in html
+    assert '<select' in html
 
 
 def test_submit_observation_full_payload():
