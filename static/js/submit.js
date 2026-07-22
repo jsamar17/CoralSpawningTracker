@@ -1,6 +1,8 @@
 let map;
 let selectedMarker = null;
 let speciesDataCache = null;
+let genusTomSelect = null;
+let speciesTomSelect = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     initMap();
@@ -94,9 +96,16 @@ function populateGenusSelect() {
         opt.textContent = genus;
         genusSelect.appendChild(opt);
     });
+
+    genusTomSelect = new TomSelect('#genus', {
+        maxOptions: 100,
+        placeholder: 'Search genus...',
+        allowEmptyOption: true,
+        onChange: onGenusChange
+    });
 }
 
-function populateSpeciesSelect(genus) {
+function buildSpeciesOptions(genus) {
     const speciesSelect = document.getElementById('species');
     speciesSelect.innerHTML = '';
 
@@ -115,9 +124,21 @@ function populateSpeciesSelect(genus) {
     }
 }
 
-function onGenusChange() {
-    const genus = document.getElementById('genus').value;
-    populateSpeciesSelect(genus);
+function initSpeciesTomSelect() {
+    if (speciesTomSelect) {
+        speciesTomSelect.destroy();
+    }
+    speciesTomSelect = new TomSelect('#species', {
+        maxOptions: 100,
+        placeholder: 'Search species...',
+        allowEmptyOption: true,
+        onChange: checkFormValid
+    });
+}
+
+function onGenusChange(genus) {
+    buildSpeciesOptions(genus);
+    initSpeciesTomSelect();
     checkFormValid();
 }
 
@@ -128,8 +149,6 @@ function wireEvents() {
         if (e.key === 'Enter') searchLocation();
     });
 
-    document.getElementById('genus').addEventListener('change', onGenusChange);
-    document.getElementById('species').addEventListener('change', checkFormValid);
     document.getElementById('location-name').addEventListener('input', checkFormValid);
     document.getElementById('obs-date').addEventListener('input', checkFormValid);
 
@@ -214,8 +233,9 @@ async function submitObservation() {
 }
 
 function resetForm() {
-    document.getElementById('genus').value = '';
-    populateSpeciesSelect('');
+    genusTomSelect.clear();
+    buildSpeciesOptions('');
+    initSpeciesTomSelect();
     document.getElementById('location-name').value = '';
     document.getElementById('obs-date').value = '';
     document.getElementById('start-time').value = '';
