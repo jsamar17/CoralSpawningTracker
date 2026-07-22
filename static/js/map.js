@@ -153,6 +153,8 @@ async function searchSpawningEvents() {
         const { spawningData, speciesData } = await loadData();
         const lat = window.selectedLocation.lat;
         const lon = window.selectedLocation.lng;
+        const includeSubs = document.getElementById('include-submissions-toggle')
+            && document.getElementById('include-submissions-toggle').checked;
         
         let filtered = [];
         for (let event of spawningData) {
@@ -176,6 +178,37 @@ async function searchSpawningEvents() {
                 
                 eventInfo.image_url = finalImageUrl;
                 filtered.push(eventInfo);
+            }
+        }
+        
+        if (includeSubs) {
+            try {
+                const resp = await fetch('/api/submissions');
+                const payload = await resp.json();
+                if (payload.success && payload.submissions.length > 0) {
+                    const genericPlaceholder = 'https://images.unsplash.com/photo-1583212292454-1fe6229603b7';
+                    for (let sub of payload.submissions) {
+                        const subLat = parseFloat(sub.latitude || 0);
+                        const subLon = parseFloat(sub.longitude || 0);
+                        const distance = calculateDistance(lat, lon, subLat, subLon);
+                        if (distance <= radius) {
+                            let eventInfo = { ...sub };
+                            eventInfo.distance = Math.round(distance * 100) / 100;
+                            eventInfo.is_user_submission = true;
+                            const genus = eventInfo.genus || 'Unknown';
+                            let finalImageUrl = genericPlaceholder + '?w=400&q=80';
+                            if (eventInfo.image_url && !eventInfo.image_url.includes('unsplash.com')) {
+                                finalImageUrl = eventInfo.image_url;
+                            } else if (speciesData[genus] && speciesData[genus].image_url) {
+                                finalImageUrl = speciesData[genus].image_url;
+                            }
+                            eventInfo.image_url = finalImageUrl;
+                            filtered.push(eventInfo);
+                        }
+                    }
+                }
+            } catch (subErr) {
+                console.warn('Could not load user submissions:', subErr);
             }
         }
         
@@ -318,7 +351,9 @@ function renderEventCards() {
 // Create event card element - RESTORED FULL FEATURES
 function createEventCard(event) {
     const card = document.createElement('div');
-    card.className = 'event-card fade-in';
+    card.className = event.is_user_submission
+        ? 'event-card fade-in user-submission-card'
+        : 'event-card fade-in';
     card.onclick = () => showEventDetails(event);
     
     const date = new Date(event.date);
@@ -328,11 +363,23 @@ function createEventCard(event) {
         day: 'numeric'
     });
     
+    const submissionBadge = event.is_user_submission
+        ? '<span class="user-submission-badge"><i class="fas fa-user-pen me-1"></i>User Submitted</span>'
+        : '';
+    
+    const submittedBy = event.submitted_by
+        ? `<div class="info-item"><i class="fas fa-user"></i><span>${event.submitted_by}</span></div>`
+        : '';
+    
+    const refText = event.is_user_submission
+        ? (event.reference || 'User observation')
+        : (event.reference || '');
+
     card.innerHTML = `
         <img src="${event.image_url}" alt="${event.genus} ${event.species}" class="event-card-image" 
              onerror="this.src='https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=300'">
         <div class="event-card-content">
-            <h6 class="event-card-title">${event.genus} ${event.species}</h6>
+            <h6 class="event-card-title">${event.genus} ${event.species} ${submissionBadge}</h6>
             <p class="event-card-subtitle">${event.location}</p>
             <div class="event-card-info">
                 <div class="info-item">
@@ -341,21 +388,18 @@ function createEventCard(event) {
                 </div>
                 <div class="info-item">
                     <i class="fas fa-clock"></i>
-                    <span>${event.start_time} - ${event.end_time}</span>
+                    <span>${event.start_time || ''}${event.start_time && event.end_time ? ' - ' : ''}${event.end_time || ''}</span>
                 </div>
                 <div class="info-item">
                     <i class="fas fa-moon"></i>
-                    <span>${event.days_after_full_moon} days after FM</span>
+                    <span>${event.days_after_full_moon != null ? event.days_after_full_moon + ' days after FM' : 'N/A'}</span>
                 </div>
-                <div class="info-item">
-                    <i class="fas fa-flask"></i>
-                    <span>${event.gamete_release}</span>
-                </div>
+                ${submittedBy}
             </div>
         </div>
         <div class="event-card-footer">
             <span class="distance-badge">${event.distance} km away</span>
-            <span class="reference-text">${event.reference}</span>
+            <span class="reference-text">${refText}</span>
         </div>
     `;
     
@@ -382,6 +426,16 @@ function showEventDetails(event) {
     
     const wormsUrl = `https://www.marinespecies.org/aphia.php?p=taxlist&tName=${encodeURIComponent(event.genus + ' ' + event.species)}`;
 
+    const timeStr = event.start_time || event.end_time
+        ? `${event.start_time || '?'} - ${event.end_time || '?'}`
+        : 'N/A';
+    const lunarStr = event.days_after_full_moon != null
+        ? event.days_after_full_moon
+        : 'N/A';
+    const sourceBadge = event.is_user_submission
+        ? '<div class="mb-2" style="color: var(--accent-primary);"><strong><i class="fas fa-user-pen me-1"></i>User-Submitted Observation</strong></div>'
+        : '';
+
     modalBody.innerHTML = `
         <div class="row">
             <div class="col-md-6">
@@ -397,17 +451,19 @@ function showEventDetails(event) {
                 </a>
             </div>
             <div class="col-md-6">
+                ${sourceBadge}
                 <h5 class="text-primary mb-3">Event Details</h5>
                 <div class="mb-2"><strong>Species:</strong> <em>${event.genus} ${event.species}</em></div>
                 <div class="mb-2"><strong>Location:</strong> ${event.location}</div>
                 <div class="mb-2"><strong>Coordinates:</strong> ${event.latitude}°, ${event.longitude}°</div>
                 <div class="mb-2"><strong>Date:</strong> ${formattedDate}</div>
-                <div class="mb-2"><strong>Time:</strong> ${event.start_time} - ${event.end_time}</div>
-                <div class="mb-2"><strong>Days After Full Moon:</strong> ${event.days_after_full_moon}</div>
-                <div class="mb-2"><strong>Gamete Release:</strong> ${event.gamete_release}</div>
+                <div class="mb-2"><strong>Time:</strong> ${timeStr}</div>
+                <div class="mb-2"><strong>Days After Full Moon:</strong> ${lunarStr}</div>
+                <div class="mb-2"><strong>Gamete Release:</strong> ${event.gamete_release || 'N/A'}</div>
                 <div class="mb-2"><strong>Observation Type:</strong> ${event.situation || 'N/A'}</div>
                 <div class="mb-2"><strong>Distance:</strong> ${event.distance} km away</div>
-                <div class="mb-2"><strong>Reference:</strong> ${event.reference}</div>
+                <div class="mb-2"><strong>Reference:</strong> ${event.reference || (event.is_user_submission ? 'User observation' : 'N/A')}</div>
+                ${event.submitted_by ? `<div class="mb-2"><strong>Submitted by:</strong> ${event.submitted_by}</div>` : ''}
             </div>
         </div>
     `;

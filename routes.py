@@ -256,3 +256,32 @@ def submit_observation():
             'success': False,
             'error': str(e)
         }), 500
+
+
+@app.route('/api/submissions', methods=['GET'])
+def list_submissions():
+    """Return all user submissions, optionally filtered by submitter."""
+    try:
+        submitter = request.args.get('submitter', '').strip()
+        submissions = submission_service.load_submissions()
+
+        if submitter:
+            submissions = [
+                s for s in submissions
+                if s.get('submitted_by', '').lower() == submitter.lower()
+            ]
+
+        return jsonify({
+            'success': True,
+            'submissions': submissions,
+            'count': len(submissions)
+        })
+
+    except Exception as e:
+        logging.error(f"List submissions error: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e),
+            'submissions': [],
+            'count': 0
+        })

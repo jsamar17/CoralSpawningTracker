@@ -92,3 +92,49 @@ def test_submit_observation_full_payload():
     assert body['submission']['start_time'] == '20:30'
     assert body['submission']['days_after_full_moon'] == 3
     assert body['submission']['submitted_by'] == 'tester'
+
+
+def test_list_submissions_empty():
+    client = app.test_client()
+    resp = client.get('/api/submissions')
+    assert resp.status_code == 200
+    body = resp.get_json()
+    assert body['success'] is True
+    assert body['submissions'] == []
+    assert body['count'] == 0
+
+
+def test_list_submissions_returns_all():
+    client = app.test_client()
+    client.post('/api/submit', json=_make_payload())
+    client.post('/api/submit', json=_make_payload(species='cytherea'))
+    resp = client.get('/api/submissions')
+    body = resp.get_json()
+    assert body['success'] is True
+    assert body['count'] == 2
+
+
+def test_list_submissions_filter_by_submitter():
+    client = app.test_client()
+    client.post('/api/submit', json=_make_payload(submitted_by='alice'))
+    client.post('/api/submit', json=_make_payload(species='cytherea', submitted_by='bob'))
+    client.post('/api/submit', json=_make_payload(species='verrucosa', submitted_by='alice'))
+
+    resp_alice = client.get('/api/submissions?submitter=alice')
+    body_alice = resp_alice.get_json()
+    assert body_alice['count'] == 2
+
+    resp_bob = client.get('/api/submissions?submitter=bob')
+    body_bob = resp_bob.get_json()
+    assert body_bob['count'] == 1
+
+    resp_none = client.get('/api/submissions?submitter=carol')
+    body_none = resp_none.get_json()
+    assert body_none['count'] == 0
+
+
+def test_search_page_has_submissions_toggle():
+    client = app.test_client()
+    resp = client.get('/')
+    html = resp.data.decode()
+    assert 'id="include-submissions-toggle"' in html
